@@ -92,14 +92,6 @@ var FilesScreen = React.createClass({
     Utils.addItemToHistory(item);
 
     Utils.triggerItem(item);
-    
-    AlertIOS.alert(
-      "Media is now playing",
-      null,
-      [
-        {text: "OK", onPress: () => {}},
-      ]
-    );
   },
 
   renderItem: function(item) {

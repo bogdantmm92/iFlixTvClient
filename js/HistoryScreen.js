@@ -7,6 +7,8 @@ var moment = require('moment');
 var FileItem = require('./FileItem');
 var Utils = require('./Utils');
 
+var SearchBar = require('react-native-search-bar');
+
 var {
   AppRegistry,
   TouchableHighlight,
@@ -48,40 +50,38 @@ var HistoryScreen = React.createClass({
     this._loadHistory();
   },
 
+  _updateWithSections: function(items) {
+    var dataBlob = {};
+    var sections = [];
+    var rows = [];
+    _.each(items, function(item) {
+      var section = parseInt(item.date / (3600 * 1000));
+      if (!dataBlob[section]) {
+        dataBlob[section] = item.date;
+        sections.push(section);
+        rows.push([item.name]);
+      } else {
+        _.last(rows).push(item.name);
+      }
+      dataBlob[section + ":" + item.name] = item;
+    });
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlob, sections, rows)
+    });
+  },
+
   _loadHistory: function() {
     Utils.loadHistoryFromDB().then(function(items) {
-      var dataBlob = {};
-      var sections = [];
-      var rows = [];
-      _.each(items, function(item) {
-        var section = parseInt(item.date / (3600 * 1000));
-        if (!dataBlob[section]) {
-          dataBlob[section] = item.date;
-          sections.push(section);
-          rows.push([item.name]);
-        } else {
-          _.last(rows).push(item.name);
-        }
-        dataBlob[section + ":" + item.name] = item;
-      });
-
       this.setState({
-        itemsCache: items,
-        dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlob, sections, rows)
+        itemsCache: items
       });
+      this._updateWithSections(items);
     }.bind(this));
   },
 
   _onFileClicked: function(item) {
     Utils.triggerItem(item);
-
-    AlertIOS.alert(
-      "Media is now playing",
-      null,
-      [
-        {text: "OK", onPress: () => {}},
-      ]
-    );
   },
 
   renderItem: function(item) {
@@ -100,12 +100,36 @@ var HistoryScreen = React.createClass({
     );
   },
 
+  _onChangeText: function(text) {
+    var items = _.filter(this.state.itemsCache, (item) => {
+      return item.name.toLowerCase().indexOf(text.toLowerCase()) > -1;
+    });
+    this._updateWithSections(items);
+  },
+  _onSearchButtonPress: function() {
+
+  },
+  _onCancelButtonPress: function() {
+
+  },
+
+  renderHeader: function() {
+    return (
+      <SearchBar
+        placeholder='Search'
+        onChangeText={this._onChangeText}
+        onSearchButtonPress={this._onSearchButtonPress}
+        onCancelButtonPress={this._onCancelButtonPress} />
+    );
+  },
+
   render: function() {
     return (
       <View style={styles.container}>
         <ListView
           dataSource={this.state.dataSource}
           renderSectionHeader={this.renderSectionHeader}
+          renderHeader={this.renderHeader}
           renderRow={this.renderItem} />
       </View>
     );
