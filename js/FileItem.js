@@ -21,7 +21,7 @@ var FileItem = React.createClass({
   },
 
   render: function() {
-    var sourceUri = this.props.item.type == "text/plain" ? "https://www.iconfinder.com/icons/315178/download/png/32" : "https://www.iconfinder.com/icons/326584/download/png/24";
+    var sourceUri = this.props.item.type == "text/plain" ? "https://www.iconfinder.com/icons/315178/download/png/32" : "https://www.iconfinder.com/icons/293273/download/png/64";
     return (
       <TouchableHighlight
         underlayColor='#E6E6E6'
@@ -52,7 +52,7 @@ var FileItem = React.createClass({
 var styles = StyleSheet.create({
   fileItemContainer: {
     flex: 1,
-    height: 50,
+    height: 60,
     alignItems: 'center',
     // marginTop: 10,
     flexDirection: 'row',
@@ -73,7 +73,6 @@ var styles = StyleSheet.create({
   detailsContainer: {
     flex: 1,
     flexDirection: 'row',
-
   },
   // Name
   fileName: {
@@ -81,6 +80,7 @@ var styles = StyleSheet.create({
     fontSize: 16,
     color: "#000000",
     marginRight: 20,
+    marginBottom: 6,
   },
   fileType: {
     fontSize: 12,
@@ -90,7 +90,7 @@ var styles = StyleSheet.create({
   fileSize: {
     position: 'absolute',
     fontSize: 12,
-    color: "#BABABA",
+    color: "#398de3",
     right: 20,
   }
 

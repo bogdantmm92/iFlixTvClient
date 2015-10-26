@@ -17,6 +17,7 @@ var {
   ActivityIndicatorIOS,
   Text,
   LinkingIOS,
+  AlertIOS,
   View,
 } = React;
 
@@ -91,6 +92,14 @@ var FilesScreen = React.createClass({
     Utils.addItemToHistory(item);
 
     Utils.triggerItem(item);
+    
+    AlertIOS.alert(
+      "Media is now playing",
+      null,
+      [
+        {text: "OK", onPress: () => {}},
+      ]
+    );
   },
 
   renderItem: function(item) {
@@ -168,7 +177,7 @@ var styles = StyleSheet.create({
   },
   infoHeaderText: {
     fontSize: 12,
-    color: "#757575",
+    color: "#398de3",
     fontWeight: "bold",
   },
 

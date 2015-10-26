@@ -35,6 +35,7 @@ var Utils = {
   },
 
   addItemToHistory: function(itemToAdd) {
+    itemToAdd.date = Date.now();
     this.loadHistoryFromDB().then(function(items) {
       items = _.filter(items, function(item) {
         return item.name !== itemToAdd.name;

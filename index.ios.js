@@ -41,7 +41,7 @@ var UPCClient = React.createClass({
           ref="navios"
           style={styles.container}
           barTintColor={"#FFFFFF"}
-          tintColor={"#A0A0A0"}
+          tintColor={"#398de3"}
           initialRoute={{
             component: FilesScreen,
             rightButtonTitle: "History",
