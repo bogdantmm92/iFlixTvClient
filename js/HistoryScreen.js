@@ -114,13 +114,14 @@ var HistoryScreen = React.createClass({
   },
 
   renderHeader: function() {
-    return (
-      <SearchBar
+    var searchHeader = (this.props.platform === "android") ? <View/> :
+      (<SearchBar
         placeholder='Search'
         onChangeText={this._onChangeText}
         onSearchButtonPress={this._onSearchButtonPress}
         onCancelButtonPress={this._onCancelButtonPress} />
-    );
+      );
+    return searchHeader;
   },
 
   render: function() {
@@ -139,11 +140,11 @@ var HistoryScreen = React.createClass({
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    top: 0,
+    // position: 'absolute',
+    // bottom: 0,
+    // left: 0,
+    // right: 0,
+    // top: 0,
     // backgroundColor: '#FF0000',
   },
   infoHeader: {

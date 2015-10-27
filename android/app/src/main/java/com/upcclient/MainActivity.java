@@ -1,15 +1,24 @@
 package com.upcclient;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 
 import com.facebook.react.LifecycleState;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+
+import java.util.List;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
 
@@ -67,12 +76,33 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         }
     }
 
+    private void sendEvent(ReactContext reactContext,
+                           String eventName,
+                           @Nullable WritableMap params) {
+        reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
 
         if (mReactInstanceManager != null) {
             mReactInstanceManager.onResume(this);
+        }
+
+        final Uri data = getIntent().getData();
+        if (data != null) {
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap jsParams = Arguments.createMap();
+                    jsParams.putString("url", data.toString());
+                    sendEvent(mReactInstanceManager.getCurrentReactContext(), "linkingAndroid", jsParams);
+                }
+            }, 1000);
         }
     }
 }

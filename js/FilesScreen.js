@@ -7,6 +7,9 @@ var _ = require('underscore');
 var FileItem = require('./FileItem');
 var Utils = require('./Utils');
 
+var RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+var Subscribable = require('Subscribable');
+
 var {
   AppRegistry,
   TouchableHighlight,
@@ -22,6 +25,8 @@ var {
 } = React;
 
 var FilesScreen = React.createClass({
+  mixins: [Subscribable.Mixin],
+
   getInitialState: function() {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     var itemsCache = [];
@@ -35,6 +40,9 @@ var FilesScreen = React.createClass({
 
   componentDidMount: function() {
     LinkingIOS.addEventListener('url', this._handleOpenURL);
+    this.addListenerOn(RCTDeviceEventEmitter,
+                       'linkingAndroid',
+                       this._handleOpenURL);
 
     this._loadLastTorrent();
     var url = LinkingIOS.popInitialURL()
@@ -124,10 +132,13 @@ var FilesScreen = React.createClass({
   _renderLoadingBar: function() {
     var loading = this.state.showLoading ? 
     (
-      <ActivityIndicatorIOS
-        animating={true}
-        style={[styles.centering, {height: 80}]}
-        size="large" />
+      this.props.platform === "android" ? 
+          (<Text style={styles.centering}>{"Loading"}</Text>)
+        :
+          <ActivityIndicatorIOS
+            animating={true}
+            style={[styles.centering, {height: 80}]}
+            size="large" />
     ) : <View/>
     return loading;
   },
@@ -147,11 +158,11 @@ var FilesScreen = React.createClass({
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    top: 0,
+    // position: 'absolute',
+    // bottom: 0,
+    // left: 0,
+    // right: 0,
+    // top: 0,
     // backgroundColor: '#FF0000',
   },
   headerContainer: {
