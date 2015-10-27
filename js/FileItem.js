@@ -21,7 +21,8 @@ var FileItem = React.createClass({
   },
 
   render: function() {
-    var sourceUri = this.props.item.type == "text/plain" ? "https://www.iconfinder.com/icons/315178/download/png/32" : "https://www.iconfinder.com/icons/293273/download/png/64";
+    var sourceUri = (this.props.item.type.indexOf("video") > -1 ||
+                      this.props.item.type.indexOf("audio") > -1) ? "https://www.iconfinder.com/icons/293273/download/png/64" : "https://www.iconfinder.com/icons/315178/download/png/32";
     return (
       <TouchableHighlight
         underlayColor='#E6E6E6'

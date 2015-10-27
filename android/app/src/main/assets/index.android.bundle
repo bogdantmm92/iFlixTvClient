@@ -52893,7 +52893,7 @@ Object.keys(componentOrElement));}
 
 module.exports = findDOMNode;
 });
-__d('UPCClient/js/FilesScreen.js',["react-native/Libraries/react-native/react-native.js","underscore/underscore.js","UPCClient/js/FileItem.js","UPCClient/js/Utils.js","RCTDeviceEventEmitter","Subscribable"],function(global, require, module, exports) {  'use strict';
+__d('UPCClient/js/FilesScreen.js',["react-native/Libraries/react-native/react-native.js","underscore/underscore.js","UPCClient/js/Utils.js","RCTDeviceEventEmitter","Subscribable","UPCClient/js/FileItem.js"],function(global, require, module, exports) {  'use strict';
 
 var React=require('react-native/Libraries/react-native/react-native.js');
 
@@ -54660,7 +54660,8 @@ this.props.onFileClicked(this.props.item);}},
 
 
 render:function(){
-var sourceUri=this.props.item.type == "text/plain"?"https://www.iconfinder.com/icons/315178/download/png/32":"https://www.iconfinder.com/icons/293273/download/png/64";
+var sourceUri=this.props.item.type.indexOf("video") > -1 || 
+this.props.item.type.indexOf("audio") > -1?"https://www.iconfinder.com/icons/293273/download/png/64":"https://www.iconfinder.com/icons/315178/download/png/32";
 return (
 React.createElement(TouchableHighlight,{
 underlayColor:'#E6E6E6',
@@ -54799,7 +54800,7 @@ console.warn(error);});}};
 
 module.exports = Utils;
 });
-__d('UPCClient/js/HistoryScreen.js',["react-native/Libraries/react-native/react-native.js","underscore/underscore.js","moment/moment.js","UPCClient/js/FileItem.js","UPCClient/js/Utils.js","react-native-search-bar/SearchBar.js"],function(global, require, module, exports) {  'use strict';
+__d('UPCClient/js/HistoryScreen.js',["react-native/Libraries/react-native/react-native.js","underscore/underscore.js","moment/moment.js","UPCClient/js/Utils.js","react-native-search-bar/SearchBar.js","UPCClient/js/FileItem.js"],function(global, require, module, exports) {  'use strict';
 
 var React=require('react-native/Libraries/react-native/react-native.js');
 var _=require('underscore/underscore.js');
